@@ -9,6 +9,8 @@
 
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
+#include <TextEditor.h>
+#include <gps/GCodeLangDef.h>
 
 GLuint LoadTexture(const char *filename) {
     int x, y, n;
@@ -82,6 +84,15 @@ int main() {
 
     GLuint texture_start = LoadTexture("/Users/milad/Projects/grbl-pro-sender/embed/texture/start.png");
 
+    TextEditor editor;
+    editor.SetLanguageDefinition(GCodeLanguageDefinition());
+    editor.SetText(
+        "G90 ; Absolute positioning\n"
+        "G1 X50 Y25 F1500 ; move\n"
+        "M3 S1000 ; spindle on\n"
+        "(End of G-code)"
+    );
+
     // Main loop
     while (!glfwWindowShouldClose(window)) {
         glfwPollEvents();
@@ -116,20 +127,20 @@ int main() {
 
         ImGui::SetNextWindowPos(ImVec2(0, toolbar_top));
         ImGui::SetNextWindowSize(ImVec2(ImGui::GetIO().DisplaySize.x, toolbar_height));
-        ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0);
+        // ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0);
         ImGuiWindowFlags toolbarFlags = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize |
                                         ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollbar |
                                         ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoDocking;
 
         ImGui::Begin("ToolbarWindow", NULL, toolbarFlags);
 
-        if (ImGui::ImageButton("ButtonStart",texture_start,ImVec2(32,32))) {
+        if (ImGui::ImageButton("ButtonStart", texture_start, ImVec2(32, 32))) {
             // Play action
         }
         ImGui::SameLine();
 
         ImGui::End();
-        ImGui::PopStyleVar();
+        // ImGui::PopStyleVar();
 
         ImGui::SetNextWindowPos(ImVec2(0, toolbar_height + toolbar_top + context->Style.FramePadding.y * 2.0f));
         ImGui::SetNextWindowSize(ImVec2(ImGui::GetIO().DisplaySize.x,
@@ -145,6 +156,11 @@ int main() {
         ImGui::DockSpace(dockspace_id, ImVec2(0, 0), ImGuiDockNodeFlags_PassthruCentralNode);
 
         ImGui::ShowDemoWindow();
+
+        ImGui::Begin("GCodeEditor");
+
+        editor.Render("GCodeEditor");
+        ImGui::End();
         ImGui::End();
 
         // Rendering

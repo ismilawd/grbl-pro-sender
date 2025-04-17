@@ -62,3 +62,6 @@ test_detail.xml
 
 # ---- Visual Studio Code (if occasionally used) ----
 .vscode/
+
+# ---- External ----
+external/

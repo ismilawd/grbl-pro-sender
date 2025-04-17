@@ -36,6 +36,8 @@ set(IMGUI_SRC
         ${IMGUI_BACKENDS_DIR}/imgui_impl_opengl3.cpp
 )
 
+set(ImGuiColorTextEdit_SOURCE_DIR "external/ImGuiColorTextEdit")
+
 # Fetch stb (header only)
 FetchContent_Declare(
         stb
@@ -53,13 +55,15 @@ include_directories(./include)
 # Main app
 add_executable(grbl_pro_sender
         src/main.cpp
-        ${IMGUI_SRC})
+        ${IMGUI_SRC}
+        ${ImGuiColorTextEdit_SOURCE_DIR}/TextEditor.cpp)
 
 # Includes
 target_include_directories(grbl_pro_sender PRIVATE
         ${IMGUI_DIR}
         ${IMGUI_BACKENDS_DIR}
         ${glfw_SOURCE_DIR}/include
+        ${ImGuiColorTextEdit_SOURCE_DIR}
 )
 
 # Link (GLFW and system OpenGL)
