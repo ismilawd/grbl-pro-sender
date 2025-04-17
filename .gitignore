@@ -1,0 +1,64 @@
+# ---- Build Folders ----
+build/
+cmake-build-*/
+
+# ---- CMake Files ----
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+CTestTestfile.cmake
+Makefile
+install_manifest.txt
+
+# ---- CLion (JetBrains) ----
+.idea/
+# Uncomment this if you don't want to share user-specific workspace config:
+# *.iml
+
+# ---- macOS System Files ----
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# ---- Crash/Indexing Files ----
+*.swp
+*.swo
+*.lock
+
+# ---- Compiled Binaries & Libs ----
+*.out
+*.o
+*.obj
+*.lo
+*.a
+*.so
+*.dylib
+*.dll
+*.exe
+
+# ---- Logs & Temporary Files ----
+*.log
+*.tmp
+
+# ---- FetchContent / External Content ----
+# (Not really, ImGui and GLFW get fetched to the build dir, not project dir)
+
+# ---- Testing/Debug ----
+Testing/
+test_detail.xml
+
+# ---- Clang, GCC, and Other ----
+*.gcno
+*.gcda
+*.gcov
+
+# ---- Xcode (if you run cmake -G Xcode) ----
+*.xcodeproj
+*.xcworkspace
+*.xcuserstate
+
+# ---- Misc ----
+*.plist
+
+# ---- Visual Studio Code (if occasionally used) ----
+.vscode/
