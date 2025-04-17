@@ -39,7 +39,7 @@ inline TextEditor::LanguageDefinition GCodeLanguageDefinition() {
     langDef.mTokenRegexStrings.push_back(
         std::make_pair<std::string, TextEditor::PaletteIndex>("\\(.*?\\)", TextEditor::PaletteIndex::Comment));
 
-    langDef.mAutoIndentation = false;
+    langDef.mAutoIndentation = true;
 
     langDef.mName = "G-code";
     return langDef;

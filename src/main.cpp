@@ -159,7 +159,7 @@ int main() {
 
         ImGui::Begin("GCodeEditor");
 
-        editor.Render("GCodeEditor");
+        editor.Render("GCodeEditorInput");
         ImGui::End();
         ImGui::End();
 
