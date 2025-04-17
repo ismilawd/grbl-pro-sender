@@ -7,7 +7,23 @@
 #include <stdio.h>
 #include <gps/resources/font/roboto_light.h>
 
-;
+#define STB_IMAGE_IMPLEMENTATION
+#include <stb_image.h>
+
+GLuint LoadTexture(const char *filename) {
+    int x, y, n;
+    unsigned char *data = stbi_load(filename, &x, &y, &n, 4);
+    GLuint tex_id = 0;
+    if (data) {
+        glGenTextures(1, &tex_id);
+        glBindTexture(GL_TEXTURE_2D, tex_id);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, x, y, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        stbi_image_free(data);
+    }
+    return tex_id;
+}
 
 void setup_imgui_fonts() {
     ImGuiIO &io = ImGui::GetIO();
@@ -64,6 +80,8 @@ int main() {
     ImGui_ImplGlfw_InitForOpenGL(window, true);
     ImGui_ImplOpenGL3_Init(glsl_version);
 
+    GLuint texture_start = LoadTexture("/Users/milad/Projects/grbl-pro-sender/embed/texture/start.png");
+
     // Main loop
     while (!glfwWindowShouldClose(window)) {
         glfwPollEvents();
@@ -98,20 +116,25 @@ int main() {
 
         ImGui::SetNextWindowPos(ImVec2(0, toolbar_top));
         ImGui::SetNextWindowSize(ImVec2(ImGui::GetIO().DisplaySize.x, toolbar_height));
-        ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize,0);
+        ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0);
         ImGuiWindowFlags toolbarFlags = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize |
                                         ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollbar |
                                         ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoDocking;
 
         ImGui::Begin("ToolbarWindow", NULL, toolbarFlags);
 
-        ImGui::Button("Fu");
+        if (ImGui::ImageButton("ButtonStart",texture_start,ImVec2(32,32))) {
+            // Play action
+        }
+        ImGui::SameLine();
 
         ImGui::End();
         ImGui::PopStyleVar();
 
-        ImGui::SetNextWindowPos(ImVec2(0, toolbar_height+toolbar_top+context->Style.FramePadding.y * 2.0f));
-        ImGui::SetNextWindowSize(ImVec2(ImGui::GetIO().DisplaySize.x, ImGui::GetIO().DisplaySize.y - (toolbar_height+toolbar_top+context->Style.FramePadding.y * 2.0f)));
+        ImGui::SetNextWindowPos(ImVec2(0, toolbar_height + toolbar_top + context->Style.FramePadding.y * 2.0f));
+        ImGui::SetNextWindowSize(ImVec2(ImGui::GetIO().DisplaySize.x,
+                                        ImGui::GetIO().DisplaySize.y - (
+                                            toolbar_height + toolbar_top + context->Style.FramePadding.y * 2.0f)));
         ImGuiWindowFlags dockspaceFlags = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize |
                                           ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollbar |
                                           ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoBringToFrontOnFocus;

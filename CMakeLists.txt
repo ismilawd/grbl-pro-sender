@@ -36,6 +36,18 @@ set(IMGUI_SRC
         ${IMGUI_BACKENDS_DIR}/imgui_impl_opengl3.cpp
 )
 
+# Fetch stb (header only)
+FetchContent_Declare(
+        stb
+        GIT_REPOSITORY https://github.com/nothings/stb.git
+        GIT_TAG        master
+)
+FetchContent_MakeAvailable(stb)
+
+# Add stb_image.h as a target (header only library)
+add_library(stb_image INTERFACE)
+target_include_directories(stb_image INTERFACE ${stb_SOURCE_DIR})
+
 include_directories(./include)
 
 # Main app
@@ -52,7 +64,7 @@ target_include_directories(grbl_pro_sender PRIVATE
 
 # Link (GLFW and system OpenGL)
 find_package(OpenGL REQUIRED)
-target_link_libraries(grbl_pro_sender PRIVATE glfw OpenGL::GL)
+target_link_libraries(grbl_pro_sender PRIVATE glfw OpenGL::GL stb_image)
 
 # Link necessary macOS frameworks
 if(APPLE)
